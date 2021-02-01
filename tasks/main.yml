@@ -1,0 +1,21 @@
+---
+- name: Install apcupsd
+  package:
+    name: apcupsd
+    state: present
+
+- name: Modify apcupsd.conf file
+  lineinfile:
+    path: /etc/apcupsd/apcupsd.conf
+    regexp: "^DEVICE /dev/ttyS0"
+    line: "# DEVICE /dev/ttyS0"
+  notify: restart-apcupsd
+
+- name: Enable and start apcupsd service
+  service:
+    name: apcupsd
+    enabled: yes
+    state: started
+
+# TODO: Add apcupsd exporter here for Prometheus
+# Maybe https://github.com/mdlayher/apcupsd_exporter
